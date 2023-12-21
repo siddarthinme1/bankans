@@ -18,6 +18,9 @@ import {
   Box,
   Popover,
   IconButton,
+  Hidden,
+  Toolbar,
+  Divider,
 } from "@mui/material";
 import {
   collection,
@@ -201,37 +204,61 @@ const TransactionsPage = () => {
         <Grid item xs={12} sm={4}>
           <Paper elevation={3} style={{ padding: "20px" }}>
             <Typography variant="h6">Transaction</Typography>
-            <TextField
-              label="Amount"
-              type="number"
-              value={amount}
-              onChange={(e) => setAmount(e.target.value)}
-              fullWidth
-              margin="normal"
-            />
-            <TextField
-              label="Description"
-              value={description}
-              onChange={(e) => setDescription(e.target.value)}
-              fullWidth
-              margin="normal"
-            />
-            <RadioGroup
-              row
-              value={transactionType}
-              onChange={(e) => setTransactionType(e.target.value)}
-            >
-              <FormControlLabel
-                value="deposit"
-                control={<Radio />}
-                label="Deposit"
-              />
-              <FormControlLabel
-                value="withdraw"
-                control={<Radio />}
-                label="Withdraw"
-              />
-            </RadioGroup>
+            <Grid container spacing={2}>
+              <Grid item xs={5} sm={12}>
+                <TextField
+                  label="Amount"
+                  type="number"
+                  value={amount}
+                  onChange={(e) => setAmount(e.target.value)}
+                  fullWidth
+                  margin="normal"
+                />
+              </Grid>
+
+              <Grid item xs={5} sm={12}>
+                <TextField
+                  label="Description"
+                  value={description}
+                  onChange={(e) => setDescription(e.target.value)}
+                  fullWidth
+                  margin="normal"
+                />
+              </Grid>
+              <Grid item xs={2} sm={12}>
+                <RadioGroup
+                  row
+                  value={transactionType}
+                  onChange={(e) => setTransactionType(e.target.value)}
+                >
+                  <Hidden smDown>
+                    <FormControlLabel
+                      value="deposit"
+                      control={<Radio color="success" />}
+                      label="Deposit"
+                    />
+                    <FormControlLabel
+                      value="withdraw"
+                      control={<Radio color="error" />}
+                      label="Withdraw"
+                    />
+                  </Hidden>
+                  <Hidden mdUp>
+                    <FormControlLabel
+                      value="deposit"
+                      control={<Radio color="success" />}
+                      label="D"
+                    />
+                    <FormControlLabel
+                      value="withdraw"
+                      control={<Radio color="error" />}
+                      label="W"
+                    />
+                  </Hidden>
+                </RadioGroup>
+              </Grid>
+            </Grid>
+
             <Button
               variant="contained"
               color="primary"
@@ -252,19 +279,21 @@ const TransactionsPage = () => {
           </Paper>
         </Grid>
         <Grid item xs={12} sm={8}>
-          <Paper
-            elevation={3}
-            style={{ padding: "20px", maxHeight: "400px", overflowY: "auto" }}
-          >
-            <Box container sx={{ display: "flex", alignItems: "center" }}>
-              <Typography variant="h6">All Transactions</Typography>
-              <Box sx={{ flexGrow: 1 }} />
-              <Typography variant="h6">
-                Balance: ₹{totalBalance.toFixed(2)}
-              </Typography>
-            </Box>
-
-            <TableContainer style={{ maxHeight: "300px" }}>
+          <Paper elevation={3} style={{ padding: "10px", overflowY: "auto" }}>
+            <Toolbar>
+              <Grid container>
+                <Grid item xs={12} sm={6}>
+                  <Typography variant="h6">Transactions</Typography>
+                </Grid>
+                <Grid item xs={12} sm={6}>
+                  <Typography variant="h6">
+                    Balance: ₹{totalBalance.toFixed(2)}
+                  </Typography>
+                </Grid>
+              </Grid>
+              <Divider />
+            </Toolbar>
+            <TableContainer style={{ maxHeight: "243px" }}>
               <Table>
                 <TableHead>
                   <TableRow>
@@ -285,7 +314,7 @@ const TransactionsPage = () => {
                       style={{ cursor: "pointer" }}
                     >
                       <TableCell>{transaction.type}</TableCell>
-                      <TableCell>${transaction.amount.toFixed(2)}</TableCell>
+                      <TableCell>₹{transaction.amount.toFixed(2)}</TableCell>
                       <TableCell>{transaction.description}</TableCell>
                       <TableCell>{transaction.addedBy}</TableCell>
                       <TableCell>
