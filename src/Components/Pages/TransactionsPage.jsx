@@ -279,11 +279,11 @@ const TransactionsPage = () => {
           </Paper>
         </Grid>
         <Grid item xs={12} sm={8}>
-          <Paper elevation={3} style={{ padding: "10px", overflowY: "auto" }}>
+          <Paper elevation={3} style={{ padding: "20px", overflowY: "auto" }}>
             <Toolbar>
               <Grid container>
                 <Grid item xs={12} sm={6}>
-                  <Typography variant="h6">Transactions</Typography>
+                  <Typography variant="h6">All Transactions</Typography>
                 </Grid>
                 <Grid item xs={12} sm={6}>
                   <Typography variant="h6">
