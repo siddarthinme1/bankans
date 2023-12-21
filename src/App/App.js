@@ -9,11 +9,13 @@ import AboutPage from "../Components/Pages/AboutPage";
 import TransactionsPage from "../Components/Pages/TransactionsPage";
 import { useContext } from "react";
 import Context from "../Components/Context/Context";
+import { CssBaseline } from "@mui/material";
 
 function App() {
-  const { isLoggedIn, setIsLoggedIn } = useContext(Context);
+  const { isLoggedIn } = useContext(Context);
   return (
     <>
+      <CssBaseline />
       <AppBarX />
       <Routes>
         <Route path="/" element={<LoginPage />} />

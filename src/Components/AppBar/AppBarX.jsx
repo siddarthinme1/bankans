@@ -16,6 +16,7 @@ import Context from "../Context/Context";
 import LoginIcon from "@mui/icons-material/Login";
 import LogoutIcon from "@mui/icons-material/Logout";
 import { auth, db, logout } from "../../Firebase/Firebase";
+import { Container } from "@mui/material";
 
 const navigationPages = [
   { label: "Home", route: "/homepage" },
@@ -75,9 +76,9 @@ function AppBarX() {
   );
 
   return (
-    <AppBar>
-      <Box sx={{ flexGrow: 1 }}>
-        <Toolbar>
+    <AppBar position="static">
+      <Container maxWidth="xl">
+        <Toolbar disableGutters>
           <AdbIcon sx={{ display: { xs: "none", md: "flex" }, mr: 1 }} />
           <Typography
             variant="h6"
@@ -205,7 +206,7 @@ function AppBarX() {
             </Menu>
           </Box>
         </Toolbar>
-      </Box>
+      </Container>
     </AppBar>
   );
 }
