@@ -16,7 +16,8 @@ import Context from "../Context/Context";
 import LoginIcon from "@mui/icons-material/Login";
 import LogoutIcon from "@mui/icons-material/Logout";
 import { auth, db, logout } from "../../Firebase/Firebase";
-import { Container } from "@mui/material";
+import { Container, Grid } from "@mui/material";
+import SavingsIcon from "@mui/icons-material/Savings";
 
 const navigationPages = [
   { label: "Home", route: "/homepage" },
@@ -79,7 +80,7 @@ function AppBarX() {
     <AppBar>
       <Container maxWidth="xl">
         <Toolbar disableGutters>
-          <AdbIcon sx={{ display: { xs: "none", md: "flex" }, mr: 1 }} />
+          <SavingsIcon sx={{ display: { xs: "none", md: "flex" }, mr: 1 }} />
           <Typography
             variant="h6"
             noWrap
@@ -98,43 +99,59 @@ function AppBarX() {
             ANS
           </Typography>
           <Box sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}>
-            <IconButton
-              size="large"
-              aria-label="account of current user"
-              aria-controls="menu-appbar"
-              aria-haspopup="true"
-              onClick={handleOpenNavMenu}
-              color="inherit"
-            >
-              <MenuIcon />
-            </IconButton>
-            <Menu
-              id="menu-appbar"
-              anchorEl={anchorElNav}
-              anchorOrigin={{ vertical: "bottom", horizontal: "left" }}
-              keepMounted
-              transformOrigin={{ vertical: "top", horizontal: "left" }}
-              open={Boolean(anchorElNav)}
-              onClose={() => handleCloseNavMenu()}
-              sx={{ display: { xs: "block", md: "none" } }}
-            >
-              {navigationPages.map((page) =>
-                user ? (
-                  <MenuItem
-                    key={page.route}
-                    onClick={() => handleCloseNavMenu(page.route)}
-                  >
-                    <Typography textAlign="center">{page.label}</Typography>
-                  </MenuItem>
-                ) : (
-                  <MenuItem onClick={handleCloseUserMenu}>
-                    <Typography textAlign="center">Login</Typography>
-                  </MenuItem>
-                )
-              )}
-            </Menu>
+            {user ? (
+              <>
+                <IconButton
+                  size="large"
+                  aria-label="account of current user"
+                  aria-controls="menu-appbar"
+                  aria-haspopup="true"
+                  onClick={handleOpenNavMenu}
+                  color="inherit"
+                >
+                  <MenuIcon />
+                </IconButton>
+                <Menu
+                  id="menu-appbar"
+                  anchorEl={anchorElNav}
+                  anchorOrigin={{ vertical: "bottom", horizontal: "left" }}
+                  keepMounted
+                  transformOrigin={{ vertical: "top", horizontal: "left" }}
+                  open={Boolean(anchorElNav)}
+                  onClose={() => handleCloseNavMenu()}
+                  sx={{ display: { xs: "block", md: "none" } }}
+                >
+                  {navigationPages.map((page) => (
+                    <MenuItem
+                      key={page.route}
+                      onClick={() => handleCloseNavMenu(page.route)}
+                    >
+                      <Typography textAlign="center">{page.label}</Typography>
+                    </MenuItem>
+                  ))}
+                </Menu>
+              </>
+            ) : (
+              <IconButton
+                size="large"
+                aria-label="account of current user"
+                aria-controls="menu-appbar"
+                aria-haspopup="true"
+                onClick={handleOpenNavMenu}
+                color="inherit"
+              >
+                <SavingsIcon />
+              </IconButton>
+            )}
           </Box>
-          <AdbIcon sx={{ display: { xs: "flex", md: "none" }, mr: 1 }} />
+
+          <SavingsIcon
+            sx={{
+              display: { xs: isLoggedIn ? "flex" : "none", md: "none" },
+              mr: 1,
+            }}
+          />
+
           <Typography
             variant="h5"
             noWrap
@@ -151,8 +168,9 @@ function AppBarX() {
               textDecoration: "none",
             }}
           >
-            LOGO
+            ANS
           </Typography>
+
           <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
             {navigationPages.map((page) => (
               <Button
