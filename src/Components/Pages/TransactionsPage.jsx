@@ -196,7 +196,7 @@ const TransactionsPage = () => {
   const id = open ? "simple-popover" : undefined;
 
   return (
-    <Container maxWidth="auto" sx={{ marginTop: "100px" }}>
+    <Container maxWidth="auto" sx={{ marginTop: { md: "100px", xs: "60px" } }}>
       <Grid container spacing={3}>
         <Grid item xs={12} sm={4}>
           <Paper elevation={3} style={{ padding: "20px" }}>
