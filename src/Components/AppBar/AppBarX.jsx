@@ -22,6 +22,8 @@ import SavingsIcon from "@mui/icons-material/Savings";
 const navigationPages = [
   { label: "Home", route: "/homepage" },
   { label: "Transactions", route: "transactions" },
+  { label: "LIC Data", route: "licdata" },
+  { label: "Vehicle Insurance", route: "vehicleinsurance" },
   { label: "Create User", route: "register" },
   { label: "About", route: "about" },
 ];

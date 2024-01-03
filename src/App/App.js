@@ -10,6 +10,8 @@ import TransactionsPage from "../Components/Pages/TransactionsPage";
 import { useContext } from "react";
 import Context from "../Components/Context/Context";
 import { CssBaseline } from "@mui/material";
+import LicDataPage from "../Components/Pages/LicDataPage";
+import VehicleInsurancePage from "../Components/Pages/VehicleInsurancePage";
 
 function App() {
   const { isLoggedIn } = useContext(Context);
@@ -24,6 +26,8 @@ function App() {
             <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/transactions" element={<TransactionsPage />} />
             <Route path="/homepage" element={<HomePage />} />
+            <Route path="/licdata" element={<LicDataPage />} />
+            <Route path="/vehicleinsurance" element={<VehicleInsurancePage />} />
           </>
         ) : (
           <Route path="/" element={<HomePage />} />
