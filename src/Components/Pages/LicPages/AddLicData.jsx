@@ -16,13 +16,14 @@ import CreditCardForm from "./LicDetailsDisplay";
 
 const AddLicData = () => {
   const [formData, setFormData] = useState({
+    Status: true,
+    InsuranceProvider: "",
     CommencementDate: "",
     Name: "",
     DOB: "",
     Username: "",
     PolicyNo: "",
     Premium: "",
-    CommencementDate__1: "",
     Plan: "",
     PolicyTerm: "",
     PremiumPayingTerm: "",
@@ -105,6 +106,16 @@ const AddLicData = () => {
             <Grid container spacing={2} sx={{ mt: 1 }}>
               <Grid item xs={12} sm={6}>
                 <TextField
+                  label="Name"
+                  name="Name"
+                  fullWidth
+                  required
+                  value={formData.Name}
+                  onChange={handleChange}
+                />
+              </Grid>
+              <Grid item xs={12} sm={6}>
+                <TextField
                   label="Commencement Date"
                   name="CommencementDate"
                   fullWidth
@@ -117,14 +128,16 @@ const AddLicData = () => {
               </Grid>
               <Grid item xs={12} sm={6}>
                 <TextField
-                  label="Name"
-                  name="Name"
+                  label="Insurance Provider"
+                  name="InsuranceProvider"
                   fullWidth
                   required
-                  value={formData.Name}
+                  InputLabelProps={{ shrink: true }}
+                  value={formData.InsuranceProvider}
                   onChange={handleChange}
                 />
               </Grid>
+
               <Grid item xs={12} sm={6}>
                 <TextField
                   label="Date of Birth"

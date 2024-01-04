@@ -20,13 +20,24 @@ import {
   Box,
   Toolbar,
   TextField,
+  AppBar,
+  Tooltip,
 } from "@mui/material";
-import { collection, getDocs, doc, deleteDoc } from "firebase/firestore";
+import {
+  collection,
+  getDocs,
+  doc,
+  deleteDoc,
+  updateDoc,
+} from "firebase/firestore";
 import { db } from "../../../Firebase/Firebase";
 import LicDataPage from "./AddLicData";
 import CreditCardForm from "./LicDetailsDisplay";
 import DeleteIcon from "@mui/icons-material/Delete";
 import LicDetailsDisplay from "./LicDetailsDisplay";
+import CloseIcon from "@mui/icons-material/Close";
+import AutoDeleteIcon from "@mui/icons-material/AutoDelete";
+import RestoreIcon from "@mui/icons-material/Restore";
 
 const DisplayLicData = () => {
   const [data, setData] = useState([]);
@@ -34,6 +45,8 @@ const DisplayLicData = () => {
   const [selectedRow, setSelectedRow] = useState(null);
   const [openDialog, setOpenDialog] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
+  const [bin, setBin] = useState(false);
+  const [deleteStatus, setDeleteStatus] = useState(false);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -51,10 +64,9 @@ const DisplayLicData = () => {
     };
 
     fetchData();
-  }, []);
+  }, [data, filteredData]);
 
   useEffect(() => {
-    // Update filteredData whenever the search term changes
     const filteredResults = data.filter((item) =>
       Object.values(item)
         .join(" ")
@@ -65,6 +77,7 @@ const DisplayLicData = () => {
   }, [searchTerm, data]);
 
   const handleRowClick = (rowData) => {
+    setDeleteStatus(rowData.Status);
     setSelectedRow(rowData);
     setOpenDialog(true);
   };
@@ -75,7 +88,9 @@ const DisplayLicData = () => {
 
   const handleDeleteEntry = async () => {
     try {
-      await deleteDoc(doc(db, "licdetails", selectedRow.id));
+      await updateDoc(doc(db, "licdetails", selectedRow.id), {
+        Status: !deleteStatus,
+      });
       const updatedData = data.filter((item) => item.id !== selectedRow.id);
       setData(updatedData);
       setFilteredData(updatedData);
@@ -90,13 +105,13 @@ const DisplayLicData = () => {
       <Toolbar>
         <Box sx={{ display: { xs: "none", md: "flex" } }}>
           <Typography variant="h4" align="center" gutterBottom>
-            LIC Data
+            {bin ? "Deleted Data" : "LIC Data"}
           </Typography>
         </Box>
         <Box sx={{ flexGrow: 1 }}></Box>
         <Box>
           <Grid container spacing={2}>
-            <Grid item xs={6} md={6}>
+            <Grid item xs={8} md={8}>
               <TextField
                 label="Search"
                 variant="outlined"
@@ -106,7 +121,14 @@ const DisplayLicData = () => {
                 onChange={(e) => setSearchTerm(e.target.value)}
               />
             </Grid>
-            <Grid item xs={6} md={6}>
+            <Grid item xs={1} md={1}>
+              <Tooltip title="Recycle Bin">
+                <IconButton onClick={() => setBin(!bin)}>
+                  <AutoDeleteIcon />
+                </IconButton>
+              </Tooltip>
+            </Grid>
+            <Grid item xs={1} md={1}>
               <LicDataPage />
             </Grid>
           </Grid>
@@ -130,30 +152,89 @@ const DisplayLicData = () => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {filteredData.map((item) => (
-              <TableRow
-                key={item.id}
-                sx={{ height: 40, cursor: "pointer" }}
-                onClick={() => handleRowClick(item)}
-              >
-                <TableCell>{item.CommencementDate}</TableCell>
-                <TableCell>{item.Name}</TableCell>
-                <TableCell sx={{ display: { xs: "none", sm: "table-cell" } }}>
-                  {item.DOB}
-                </TableCell>
-                <TableCell sx={{ display: { xs: "none", sm: "table-cell" } }}>
-                  {item.PolicyNo}
-                </TableCell>
-                <TableCell sx={{ display: { xs: "none", sm: "table-cell" } }}>
-                  {item.Premium}
-                </TableCell>
-              </TableRow>
-            ))}
+            {filteredData.map((item) => {
+              if (item.Status && bin == false) {
+                return (
+                  <TableRow
+                    key={item.id}
+                    sx={{ height: 40, cursor: "pointer" }}
+                    onClick={() => handleRowClick(item)}
+                  >
+                    <TableCell>{item.CommencementDate}</TableCell>
+                    <TableCell>{item.Name}</TableCell>
+                    <TableCell
+                      sx={{ display: { xs: "none", sm: "table-cell" } }}
+                    >
+                      {item.DOB}
+                    </TableCell>
+                    <TableCell
+                      sx={{ display: { xs: "none", sm: "table-cell" } }}
+                    >
+                      {item.PolicyNo}
+                    </TableCell>
+                    <TableCell
+                      sx={{ display: { xs: "none", sm: "table-cell" } }}
+                    >
+                      {item.Premium}
+                    </TableCell>
+                  </TableRow>
+                );
+              } else if (item.Status == false && bin) {
+                return (
+                  <TableRow
+                    key={item.id}
+                    sx={{ height: 40, cursor: "pointer" }}
+                    onClick={() => handleRowClick(item)}
+                  >
+                    <TableCell>{item.CommencementDate}</TableCell>
+                    <TableCell>{item.Name}</TableCell>
+                    <TableCell
+                      sx={{ display: { xs: "none", sm: "table-cell" } }}
+                    >
+                      {item.DOB}
+                    </TableCell>
+                    <TableCell
+                      sx={{ display: { xs: "none", sm: "table-cell" } }}
+                    >
+                      {item.PolicyNo}
+                    </TableCell>
+                    <TableCell
+                      sx={{ display: { xs: "none", sm: "table-cell" } }}
+                    >
+                      {item.Premium}
+                    </TableCell>
+                  </TableRow>
+                );
+              }
+            })}
           </TableBody>
         </Table>
       </TableContainer>
       <Dialog open={openDialog} onClose={handleCloseDialog}>
-        <DialogTitle>Lic Details</DialogTitle>
+        <AppBar sx={{ position: "relative" }}>
+          <Toolbar>
+            {bin ? (
+              <Tooltip title="Double click to Restore">
+                <IconButton color="warning" onDoubleClick={handleDeleteEntry}>
+                  <RestoreIcon />
+                </IconButton>
+              </Tooltip>
+            ) : (
+              <Tooltip title="Double click to Delete">
+                <IconButton color="warning" onDoubleClick={handleDeleteEntry}>
+                  <DeleteIcon />
+                </IconButton>
+              </Tooltip>
+            )}
+            <Typography sx={{ ml: 2, flex: 1 }} variant="h6" component="div">
+              LIC Details
+            </Typography>
+            <Button autoFocus color="inherit" onClick={handleCloseDialog}>
+              Close
+            </Button>
+          </Toolbar>
+        </AppBar>
+
         <DialogContent>
           {selectedRow && (
             <>
@@ -161,12 +242,7 @@ const DisplayLicData = () => {
             </>
           )}
         </DialogContent>
-        <DialogActions sx={{ gridColumn: "1/-1" }}>
-          <IconButton color="error" onClick={handleDeleteEntry}>
-            <DeleteIcon />
-          </IconButton>
-          <Button onClick={handleCloseDialog}>Close</Button>
-        </DialogActions>
+        <DialogActions sx={{ gridColumn: "1/-1" }}></DialogActions>
       </Dialog>
     </Container>
   );
