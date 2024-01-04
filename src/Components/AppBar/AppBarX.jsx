@@ -22,7 +22,7 @@ import SavingsIcon from "@mui/icons-material/Savings";
 const navigationPages = [
   { label: "Home", route: "/homepage" },
   { label: "Transactions", route: "transactions" },
-  { label: "LIC Data", route: "licdata" },
+  { label: "LIC", route: "displaylicdata" },
   { label: "Vehicle Insurance", route: "vehicleinsurance" },
   { label: "Create User", route: "register" },
   { label: "About", route: "about" },
@@ -79,7 +79,7 @@ function AppBarX() {
   );
 
   return (
-    <AppBar>
+    <AppBar position="sticky">
       <Container maxWidth="xl">
         <Toolbar disableGutters>
           <SavingsIcon sx={{ display: { xs: "none", md: "flex" }, mr: 1 }} />
@@ -87,7 +87,7 @@ function AppBarX() {
             variant="h6"
             noWrap
             component="a"
-            href="#app-bar-with-responsive-menu"
+            href="/"
             sx={{
               mr: 2,
               display: { xs: "none", md: "flex" },
