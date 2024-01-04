@@ -79,7 +79,7 @@ function AppBarX() {
   );
 
   return (
-    <AppBar position="sticky">
+    <AppBar>
       <Container maxWidth="xl">
         <Toolbar disableGutters>
           <SavingsIcon sx={{ display: { xs: "none", md: "flex" }, mr: 1 }} />

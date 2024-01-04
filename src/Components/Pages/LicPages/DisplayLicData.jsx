@@ -22,16 +22,18 @@ import {
   TextField,
 } from "@mui/material";
 import { collection, getDocs, doc, deleteDoc } from "firebase/firestore";
-import { db } from "../../Firebase/Firebase";
-import DeleteIcon from "@mui/icons-material/Delete";
+import { db } from "../../../Firebase/Firebase";
 import LicDataPage from "./AddLicData";
+import CreditCardForm from "./LicDetailsDisplay";
+import DeleteIcon from "@mui/icons-material/Delete";
+import LicDetailsDisplay from "./LicDetailsDisplay";
 
 const DisplayLicData = () => {
   const [data, setData] = useState([]);
   const [filteredData, setFilteredData] = useState([]);
   const [selectedRow, setSelectedRow] = useState(null);
   const [openDialog, setOpenDialog] = useState(false);
-  const [searchTerm, setSearchTerm] = useState(""); // State for search term
+  const [searchTerm, setSearchTerm] = useState("");
 
   useEffect(() => {
     const fetchData = async () => {
@@ -42,7 +44,7 @@ const DisplayLicData = () => {
           ...doc.data(),
         }));
         setData(data);
-        setFilteredData(data); // Initialize filteredData with all data
+        setFilteredData(data);
       } catch (error) {
         console.error("Error fetching data: ", error);
       }
@@ -74,7 +76,6 @@ const DisplayLicData = () => {
   const handleDeleteEntry = async () => {
     try {
       await deleteDoc(doc(db, "licdetails", selectedRow.id));
-      // Update the data after deletion
       const updatedData = data.filter((item) => item.id !== selectedRow.id);
       setData(updatedData);
       setFilteredData(updatedData);
@@ -85,7 +86,7 @@ const DisplayLicData = () => {
   };
 
   return (
-    <Container maxWidth="auto" sx={{ mt: 2 }}>
+    <Container maxWidth="auto" sx={{ mt: 12 }}>
       <Toolbar>
         <Box sx={{ display: { xs: "none", md: "flex" } }}>
           <Typography variant="h4" align="center" gutterBottom>
@@ -111,7 +112,7 @@ const DisplayLicData = () => {
           </Grid>
         </Box>
       </Toolbar>
-      <TableContainer component={Paper} style={{ maxHeight: "450px" }}>
+      <TableContainer component={Paper}>
         <Table>
           <TableHead>
             <TableRow sx={{ minHeight: 50 }}>
@@ -152,28 +153,15 @@ const DisplayLicData = () => {
         </Table>
       </TableContainer>
       <Dialog open={openDialog} onClose={handleCloseDialog}>
-        <DialogTitle>Details</DialogTitle>
+        <DialogTitle>Lic Details</DialogTitle>
         <DialogContent>
           {selectedRow && (
             <>
-              <div>Commencement Date: {selectedRow.CommencementDate}</div>
-              <div>Name: {selectedRow.Name}</div>
-              <div>Date of Birth: {selectedRow.DOB}</div>
-              <div>Policy No.: {selectedRow.PolicyNo}</div>
-              <div>Premium: {selectedRow.Premium}</div>
-              <div>Username: {selectedRow.Username}</div>
-              <div>Plan: {selectedRow.Plan}</div>
-              <div>Policy Term: {selectedRow.PolicyTerm}</div>
-              <div>Premium Paying Term: {selectedRow.PremiumPayingTerm}</div>
-              <div>Sum Assured: {selectedRow.SumAssured}</div>
-              <div>Date Of Last Payment: {selectedRow.DateOfLastPayment}</div>
-              <div>Nomination: {selectedRow.Nomination}</div>
-              <div>Maturity Date: {selectedRow.MaturityDate}</div>
-              <div>Comments: {selectedRow.Comments}</div>
+              <LicDetailsDisplay selectedRow={selectedRow} />
             </>
           )}
         </DialogContent>
-        <DialogActions>
+        <DialogActions sx={{ gridColumn: "1/-1" }}>
           <IconButton color="error" onClick={handleDeleteEntry}>
             <DeleteIcon />
           </IconButton>

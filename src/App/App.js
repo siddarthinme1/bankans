@@ -9,38 +9,44 @@ import AboutPage from "../Components/Pages/AboutPage";
 import TransactionsPage from "../Components/Pages/TransactionsPage";
 import { useContext } from "react";
 import Context from "../Components/Context/Context";
-import { CssBaseline } from "@mui/material";
+import { CssBaseline, ThemeProvider, createTheme } from "@mui/material";
 import VehicleInsurancePage from "../Components/Pages/VehicleInsurancePage";
-import DisplayLicData from "../Components/Pages/DisplayLicData";
+import DisplayLicData from "../Components/Pages/LicPages/DisplayLicData";
 
 function App() {
   const { isLoggedIn } = useContext(Context);
 
+  const lightTheme = createTheme({});
+
+  const darkTheme = createTheme({ palette: { mode: "dark" } });
+
   return (
     <>
-      <CssBaseline />
-      <AppBarX />
-      <Routes>
-        <Route path="/" element={<LoginPage />} />
-        {isLoggedIn ? (
-          <>
-            <Route path="/dashboard" element={<Dashboard />} />
-            <Route path="/transactions" element={<TransactionsPage />} />
-            <Route path="/homepage" element={<HomePage />} />
-            <Route path="/displaylicdata" element={<DisplayLicData />} />
-            <Route
-              path="/vehicleinsurance"
-              element={<VehicleInsurancePage />}
-            />
-          </>
-        ) : (
+      <ThemeProvider theme={darkTheme}>
+        <CssBaseline />
+        <AppBarX />
+        <Routes>
           <Route path="/" element={<LoginPage />} />
-        )}
-        <Route path="/homepage" element={<HomePage />} exact />
-        <Route path="/register" element={<SignUpPage />} />
-        <Route path="/reset" element={<ResetPassword />} />
-        <Route path="/about" element={<AboutPage />} />
-      </Routes>
+          {isLoggedIn ? (
+            <>
+              <Route path="/dashboard" element={<Dashboard />} />
+              <Route path="/transactions" element={<TransactionsPage />} />
+              <Route path="/homepage" element={<HomePage />} />
+              <Route path="/displaylicdata" element={<DisplayLicData />} />
+              <Route
+                path="/vehicleinsurance"
+                element={<VehicleInsurancePage />}
+              />
+            </>
+          ) : (
+            <Route path="/" element={<Dashboard />} />
+          )}
+          <Route path="/homepage" element={<HomePage />} />
+          <Route path="/register" element={<SignUpPage />} />
+          <Route path="/reset" element={<ResetPassword />} />
+          <Route path="/about" element={<AboutPage />} />
+        </Routes>
+      </ThemeProvider>
     </>
   );
 }

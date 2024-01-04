@@ -35,13 +35,14 @@ function LoginPage() {
 
   return (
     <Container
-      maxWidth="md"
+      maxWidth="auto"
       sx={{
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
         justifyContent: "center",
-        minHeight: "100vh", // This ensures the container takes at least the full height of the viewport
+        mt: 12,
+        // minHeight: "100vh",
       }}
     >
       <Grid container spacing={3} justifyContent="center" alignItems="center">

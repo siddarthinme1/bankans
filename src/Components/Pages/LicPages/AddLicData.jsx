@@ -11,7 +11,8 @@ import {
   Grid,
 } from "@mui/material";
 import { collection, addDoc } from "firebase/firestore";
-import { db } from "../../Firebase/Firebase";
+import { db } from "../../../Firebase/Firebase";
+import CreditCardForm from "./LicDetailsDisplay";
 
 const AddLicData = () => {
   const [formData, setFormData] = useState({

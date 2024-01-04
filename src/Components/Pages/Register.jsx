@@ -52,10 +52,14 @@ function Register() {
         flexDirection: "column",
         alignItems: "center",
         justifyContent: "center",
-        minHeight: "100vh",
+        mt: 12,
+        // minHeight: "100vh",
       }}
     >
-      <Paper elevation={3} style={{ padding: "20px", textAlign: "center", width: "100%" }}>
+      <Paper
+        elevation={3}
+        style={{ padding: "20px", textAlign: "center", width: "100%" }}
+      >
         <Typography variant="h4" gutterBottom>
           Register
         </Typography>
